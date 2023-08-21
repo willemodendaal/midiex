@@ -5,17 +5,17 @@ extern crate midir;
 #[macro_use]
 extern crate lazy_static;
 
-#[cfg(all(target_os = "macos"))]
-use core_foundation::runloop::CFRunLoop;
-use coremidi::{Client, Notification, AddedRemovedInfo, ObjectType};
-use coremidi::Notification::{ObjectAdded, ObjectRemoved};
+// #[cfg(all(target_os = "macos"))]
+// use core_foundation::runloop::CFRunLoop;
+// use coremidi::{Client, Notification, AddedRemovedInfo, ObjectType};
+// use coremidi::Notification::{ObjectAdded, ObjectRemoved};
 
 use std::sync::Mutex;
 use std::result::Result;
 use std::ops::{DerefMut, Add};
 
 use midir::{MidiInput, MidiOutput, MidiOutputConnection, MidiInputPort, MidiOutputPort, Ignore, InitError};
-use midir::os::unix::{VirtualInput, VirtualOutput};
+// use midir::os::unix::{VirtualInput, VirtualOutput};
 
 use rustler::{Atom, Env, Error, NifStruct, NifMap, ResourceArc, Term, Binary, OwnedEnv, Encoder};
 
@@ -190,7 +190,7 @@ fn get_subscribed_virtual_ports() -> Result<Vec<VirtualMidiPort>, Error> {
     Ok(GLOBAL_VIRTUAL_LISTEN_LIST.lock().unwrap().to_vec()) 
 }
 
-
+/* XXX
 // This replaces all other create_virtual_input stuff
 #[rustler::nif]
 pub fn subscribe_virtual_input(env: Env, virtual_midi_port: VirtualMidiPort) -> Atom {    
@@ -231,14 +231,14 @@ pub fn subscribe_virtual_input(env: Env, virtual_midi_port: VirtualMidiPort) -> 
 
     atoms::ok()
 }
-
+*/
 
 // ---------------------------------------
 // NOTIFICATIONS AND HOTPLUG
 // ---------------------------------------
 // Supported on MacOS only at the moment
 // ---------------------------------------
-
+/*
 #[cfg(all(target_os = "macos"))]
 #[rustler::nif]
 pub fn notifications(env: Env) -> Result<Atom, Error> {
@@ -299,7 +299,7 @@ pub fn hotplug() -> Result<Atom, Error> {
     )))
 }
 
-
+*/
 // ------------------
 // OUTPUT CONNECTION
 // ------------------
@@ -396,7 +396,7 @@ fn close_out_conn(midi_out_conn: OutConn) -> Atom {
 // ------------------------
 // VIRTUAL OUPUT
 // ------------------------
-
+/*
 #[rustler::nif]
 fn create_virtual_output_conn(name: String) -> Result<OutConn, Error>{
 
@@ -429,7 +429,7 @@ fn create_virtual_output_conn(name: String) -> Result<OutConn, Error>{
     )
 
 }
-
+*/
 // ------------------------
 // SENDING MIDI MESSAGES
 // ------------------------
@@ -467,6 +467,7 @@ pub struct MidiMessage {
 // =================
 // MIDI Notification
 // =================
+/*
 #[derive(NifStruct)]
 #[module = "Midiex.MidiNotification"]
 pub struct MidiNotification {
@@ -514,7 +515,8 @@ impl MidiNotification {
         
     }
 }
-
+*/
+/* XXX
 fn midi_obj_type_to_atom(object_type: ObjectType) -> Atom {
     match object_type {
         ObjectType::Other => atoms::other(),
@@ -528,7 +530,7 @@ fn midi_obj_type_to_atom(object_type: ObjectType) -> Atom {
         ObjectType::ExternalDestination => atoms::output(),
     }
 }
-
+*/
 
 
 // ===============
@@ -747,8 +749,10 @@ fn on_load(env: Env, _info: Term) -> bool {
     // MIDI connection to a MIDI port
     rustler::resource!(OutConnRef, env);
 
+    /*
     // MIDI notification
     rustler::resource!(MidiNotification, env);
+    */
 
     // MIDI message
     rustler::resource!(MidiMessage, env);
@@ -768,15 +772,15 @@ rustler::init!(
         unsubscribe_all_ports,
         unsubscribe_port,
         unsubscribe_port_by_index,
-        create_virtual_output_conn,
+//        create_virtual_output_conn,
         create_virtual_input,
-        subscribe_virtual_input,
+//        subscribe_virtual_input,
         unsubscribe_virtual_port,
         unsubscribe_all_virtual_ports,
         get_subscribed_ports,
-        get_subscribed_virtual_ports,
-        notifications,
-        hotplug
+        get_subscribed_virtual_ports
+//        notifications,
+//        hotplug
         ],
     load = on_load
 );
