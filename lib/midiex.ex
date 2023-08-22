@@ -296,8 +296,8 @@ defmodule Midiex do
   def close([]), do: []
   def close(out_conn), do: Backend.close_out_conn(out_conn)
 
-  @doc section: :virtual
-  @spec create_virtual_output(String.t()) :: %Midiex.OutConn{}
+#  @doc section: :virtual
+#  @spec create_virtual_output(String.t()) :: %Midiex.OutConn{}
   @doc """
   Creates a virtual output connection.
 
@@ -329,10 +329,11 @@ defmodule Midiex do
   > It also means it will show as `%Midiex.MidiPort{direction: :input}` when calling `Midiex.ports()`.
 
   """
-  def create_virtual_output(name), do: Backend.create_virtual_output_conn(name)
+  # XXX 'Virtual' inputs and outputs don't work on Windows.
+  #def create_virtual_output(name), do: Backend.create_virtual_output_conn(name)
 
-  @doc section: :virtual
-  @spec create_virtual_input(String.t()) :: %Midiex.VirtualMidiPort{}
+#  @doc section: :virtual
+#  @spec create_virtual_input(String.t()) :: %Midiex.VirtualMidiPort{}
   @doc """
   Creates a virtual input port struct.
 
@@ -368,7 +369,8 @@ defmodule Midiex do
   - `Midiex.unsubscribe(my_virtual_in)`
   - If using a Listener GenServer: `Midiex.Listener.unsubscribe(my_virtual_in)`
   """
-  def create_virtual_input(name), do: Backend.create_virtual_input(name)
+  # XXX 'Virtual' inputs and outputs don't work on Windows.
+  # def create_virtual_input(name), do: Backend.create_virtual_input(name)
 
   # MIDI messaging functions
 
