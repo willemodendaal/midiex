@@ -1,3 +1,8 @@
+# Readme
+This variant of midiex excludes everything that can only run on Mac, so that it's possible to compile and use the functionality that's still available on Windows (eg. sending midi messages to ports)
+
+# Original documentation
+
 ![Midiex](assets/midiex_logo_wide.png)
 
 [![Documentation](http://img.shields.io/badge/hex.pm-docs-green.svg?style=flat)](https://hexdocs.pm/midiex)
